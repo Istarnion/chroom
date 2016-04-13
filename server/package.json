@@ -1,0 +1,16 @@
+{
+  "name": "chatter_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Hallgeir Løkken",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.4",
+    "ws": "^1.1.0"
+  }
+}
