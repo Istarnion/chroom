@@ -19,6 +19,7 @@ textarea {
 }
 
 #chatwindow {
+  font-family: "Lucida Console", Monaco, monospace;
   width: 100%;
   margin: 0 auto;
   min-height: 500px;
