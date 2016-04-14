@@ -6,10 +6,12 @@
 textarea {
   resize: none;
 }
-
+#nameInput {
+  width: 50%;
+}
 #inputDefault {
-  float: left;
-  width: 95%;
+  /*float: left;*/
+  width: 50%;
 }
 
 #submit-button {
