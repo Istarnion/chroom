@@ -3,3 +3,31 @@
     margin: 5px auto;
 }
 
+textarea {
+  resize: none;
+}
+
+#inputDefault {
+  float: left;
+  width: 95%;
+}
+
+#submit-button {
+  width: 5%;
+}
+
+#chatwindow {
+  width: 100%;
+  margin: 0 auto;
+  min-height: 500px;
+}
+
+.tab-content {
+  width: 100%;
+  margin: 0 auto;
+}
+
+#content {
+  width: 90%;
+  margin: 0 auto;
+}

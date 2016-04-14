@@ -5,44 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CHRoom</title>
 
-    
+
     <link rel="stylesheet" href="node_modules/bootswatch/darkly/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
 <body>
 
     <div id="wrapper" class="panel panel-default">
-        
+
         <div class="panel-heading">
             <h1>CHRoom</h1>
+            <p id="connection_label"></p>
         </div>
         <div id="content" class="panel-body">
             <ul class="nav nav-tabs">
                 <li class="active">
-                    <a href="#new" data-toggle="tab">+</a>
+                  <a href="#test" data-toggle="tab">Test</a>
                 </li>
                 <li>
-                    <a href="#test" data-toggle="tab">Test</a>
+                  <a href="#new" data-toggle="tab">+</a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane fade active in" id="new">
+                <div class="tab-pane fade" id="new">
                     <p>Add new chat room!</p>
                 </div>
-                <div class="tab-pane fade" id="test">
-                    <p>This is a test tab</p>
+                <div class="tab-pane fade active in" id="test">
+                  <textarea readonly="true" class="form-control" id="chatwindow"></textarea>
+                  <br /><br />
+                    <input class="form-control" id="inputDefault" type="text" value="Anon">
+                    <input class="form-control" id="inputDefault" type="text">
+                    <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>                  
                 </div>
             </div>
         </div>
         <div class="panel-footer">
-            <footer>Room-based free chatting, made by Istarnion</footer>
+            <footer>Room-based free chatting, made by Istarnion & oskogstad</footer>
         </div>
     </div>
 
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="js/chatter.js"></script>
-    
+
 </body>
 </html>
-
