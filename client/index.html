@@ -31,11 +31,17 @@
                     <p>Add new chat room!</p>
                 </div>
                 <div class="tab-pane fade active in" id="test">
-                  <textarea readonly="true" class="form-control" id="chatwindow"></textarea>
+                  <div id="chatarea"></div>
                   <br />
-                    Name: <input class="form-control" id="nameInput" type="text" value="Anon">
+                    <div id="namefieldwrap" class="form-group">
+                        <label class="control-label" for="nameInput">Name:</label>
+                        <input class="form-control" id="nameInput" type="text" value="Anon">
+                    </div>
                     <br />
-                    Msg: <input class="form-control" id="inputDefault" type="text">
+                    <div id="msgfieldwrap" class="form-group">
+                        <label class="control-label" for="msgInput">Msg:</label>
+                        <input class="form-control" id="msgInput" type="text">
+                    </div>
                     <br />
                     <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
                 </div>

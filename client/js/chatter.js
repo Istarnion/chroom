@@ -21,10 +21,6 @@ function getDateString() {
         return s;
     }
 
-    console.log("TEST: "+toDoubleDigit("2"));
-    console.log("TEST: "+toDoubleDigit("22"));
-    console.log("TEST: "+toDoubleDigit(""));
-
     var d = new Date();
     return d.getFullYear()+"-"+toDoubleDigit(d.getMonth())+"-"+toDoubleDigit(d.getDate())+" "+
         toDoubleDigit(d.getHours())+":"+toDoubleDigit(d.getMinutes())+":"+toDoubleDigit(d.getSeconds());
@@ -44,24 +40,32 @@ $(function() {
     };
 
   ws.onmessage = (event) => {
-    var json = JSON.parse(event.data);
-    chatwindow.val(chatwindow.val()
-    + "\n["+json.timestamp + "] "+stringFormat("<"+  json.name + ">", 16, false) + json.msg);
+    var chatarea = $("#chatarea");
 
-    chatwindow.scrollTop(chatwindow[0].scrollHeight);
+    var json = JSON.parse(event.data);
+    var str =
+        '<span class="timestamp">'+"["+json.timestamp + "] </span>"+
+        '<span class="name">'+stringFormat("&lt"+  json.name + "&gt", 16, false)+'</span>'+
+        '<span class="message">'+json.msg+'</span>';
+
+    chatarea.html(chatarea.html() + "<br>"+str);
+
+    chatarea.scrollTop(chatarea[0].scrollHeight);
 
   };
 
   function sendMsg() {
     var namefield = $("#nameInput");
-    var msgfield = $("#inputDefault");
+    var msgfield = $("#msgInput");
     if(!namefield.val()) {
+       // Error 
     }
     else {
       if(msgfield.val()) {
         var datestring = getDateString();
-        var json = {"name": namefield.val(), "msg": msgfield.val(), "timestamp": datestring};
+        var json = {name: namefield.val(), msg: msgfield.val(), timestamp: datestring};
         ws.send(JSON.stringify(json));
+        $("#msgInput").val("");
       }
     }
   }
@@ -70,10 +74,9 @@ $(function() {
       sendMsg();
   });
 
-  $("#inputDefault").keyup((event) => {
+  $("#msgInput").keyup((event) => {
       if (event.keyCode === 13) {  // Enter
         sendMsg();
-        $("#inputDefault").val("");
       }
   })
 });

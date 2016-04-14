@@ -6,11 +6,11 @@
 textarea {
   resize: none;
 }
-#nameInput {
+
+.form-control {
   width: 50%;
 }
 #inputDefault {
-  /*float: left;*/
   width: 50%;
 }
 
@@ -18,11 +18,18 @@ textarea {
   width: 5%;
 }
 
-#chatwindow {
+#chatarea {
   font-family: "Lucida Console", Monaco, monospace;
   width: 100%;
   margin: 0 auto;
-  min-height: 500px;
+  padding: 10px 15px;
+  height: 500px;
+  background: #ebebeb;
+  color: black;
+  border-radius: 5px;
+  margin: 3px auto;
+  overflow: auto;
+  overflow-y: scroll;
 }
 
 .tab-content {
@@ -31,6 +38,7 @@ textarea {
 }
 
 #content {
+  height: 90%;
   width: 90%;
   margin: 0 auto;
 }

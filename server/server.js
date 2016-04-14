@@ -2,6 +2,7 @@
 
 var express = require('express');
 var ws = require('ws');
+var escape = require('escape-html')
 
 var http_server = express();
 
@@ -13,10 +14,19 @@ ws_server.on('connection', (connection) => {
   console.log('Opened a connection');
 
   connection.on('message', (message) => {
-    console.log("message: "+message);
+    var json = JSON.parse(message);
+    json = JSON.stringify(
+        {
+            name:escape(json.name),
+            msg:escape(json.msg),
+            timestamp:escape(json.timestamp)
+        }
+    );
+
+    console.log("message: "+json);
 
     for(var c=0;c<ws_server.clients.length;c++) {
-      ws_server.clients[c].send(message);
+      ws_server.clients[c].send(json);
     }
   });
 
