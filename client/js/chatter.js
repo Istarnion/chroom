@@ -1,8 +1,8 @@
 "use strict";
 
 $(function() {
-
-  var ws = new WebSocket("ws://localhost:4242");
+  var chatwindow = $("#chatwindow");
+  var ws = new WebSocket("ws://158.38.55.16:4242");
 
   ws.onerror = (msg) => {
       console.log(msg);
@@ -13,7 +13,25 @@ $(function() {
       $("#connection_label").html("Connected");
     };
 
-  $("submit-button").on("click", () => {
-      console.log("submat");
+  ws.onmessage = (event) => {
+    var json = JSON.parse(event.data);
+    chatwindow.val(chatwindow.val()
+    + "\n["+json.timestamp + "] <"+  json.name + "> " + json.msg);
+
+  };
+
+  
+  $("#submit-button").click(() => {
+    var namefield = $("#nameInput");
+    var msgfield = $("#inputDefault");
+    if(!namefield.val()) {
+    }
+    else {
+      if(msgfield.val()) {
+        var d = new Date().toISOString();
+        var json = {"name": namefield.val(), "msg": msgfield.val(), "timestamp": d};
+        ws.send(JSON.stringify(json));
+      }
+    }
   });
 });
