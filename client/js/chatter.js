@@ -18,6 +18,8 @@ $(function() {
     chatwindow.val(chatwindow.val()
     + "\n["+json.timestamp + "] <"+  json.name + "> " + json.msg);
 
+    chatwindow.scrollTop(chatwindow[0].scrollHeight);
+
   };
 
   
@@ -29,9 +31,11 @@ $(function() {
     else {
       if(msgfield.val()) {
         var d = new Date().toISOString();
-        var json = {"name": namefield.val(), "msg": msgfield.val(), "timestamp": d};
+        var datestring = d.getYear()+"-"+d.getMonth()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        var json = {"name": namefield.val(), "msg": msgfield.val(), "timestamp": datestring};
         ws.send(JSON.stringify(json));
       }
     }
   });
 });
+
