@@ -22,13 +22,19 @@ function getDateString() {
     }
 
     var d = new Date();
-    return d.getFullYear()+"-"+toDoubleDigit(d.getMonth())+"-"+toDoubleDigit(d.getDate())+" "+
+    return d.getFullYear()+"-"+toDoubleDigit(d.getMonth()+1)+"-"+toDoubleDigit(d.getDate())+" "+
         toDoubleDigit(d.getHours())+":"+toDoubleDigit(d.getMinutes())+":"+toDoubleDigit(d.getSeconds());
 }
 
 $(function() {
   var chatwindow = $("#chatwindow");
-  var ws = new WebSocket("ws://localhost:4242");
+  var host = location.host;
+  var n = host.indexOf(":");
+  if (n > -1) {
+      host = host.substr(0, n);
+  }
+  console.log(host);
+  var ws = new WebSocket("ws://"+host+":4242");
 
   ws.onerror = (msg) => {
       console.log(msg);
