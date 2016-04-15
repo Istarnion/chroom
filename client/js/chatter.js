@@ -50,9 +50,9 @@ $(function() {
 
     var json = JSON.parse(event.data);
     var str =
-        '<span class="timestamp">'+"["+json.timestamp + "] </span>"+
-        '<span class="name">'+stringFormat("&lt"+  json.name + "&gt", 16, false)+'</span>'+
-        '<span class="message">'+json.msg+'</span>';
+        '<span class="timestamp chat">'+"["+json.timestamp + "] </span>"+
+        '<span class="name chat">'+stringFormat("&lt"+  json.name + "&gt", 16, false)+'</span>'+
+        '<span class="message chat">'+json.msg+'</span>';
 
     chatarea.html(chatarea.html() + "<br>"+str);
 
