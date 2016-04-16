@@ -3,6 +3,8 @@
 var express = require('express');
 var ws = require('ws');
 var escape = require('escape-html')
+var connectionID = 0;
+var fs = require('fs');
 
 var http_server = express();
 
@@ -11,9 +13,14 @@ var ws_server = new ws.Server({port:4242});
 http_server.use(express.static(__dirname + "/../client"));
 
 ws_server.on('connection', (connection) => {
-  console.log('Opened a connection');
+  connectionID++;
+  console.log('Opened a connection, id: '+connectionID);
 
   connection.on('message', (message) => {
+    fs.appendFile('chatlog.txt', '\n'+message, function (err) {
+      if (err) return console.log(err);
+    });
+
     var json = JSON.parse(message);
     json = JSON.stringify(
         {
@@ -31,7 +38,8 @@ ws_server.on('connection', (connection) => {
   });
 
   connection.on('close', () => {
-    console.log("Closed a connection");
+    console.log("Closed a connection, id: "+connectionID);
+    connectionID--;
   });
 
   connection.on('error', (error) => {
