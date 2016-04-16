@@ -5,16 +5,27 @@ var ws = require('ws');
 var escape = require('escape-html')
 var connectionID = 0;
 var fs = require('fs');
-
 var http_server = express();
-
 var ws_server = new ws.Server({port:4242});
 
 http_server.use(express.static(__dirname + "/../client"));
 
 ws_server.on('connection', (connection) => {
+
   connectionID++;
   console.log('Opened a connection, id: '+connectionID);
+
+  // sending chatlog to new connection
+  var chatlog = fs.open('chatlog.txt', 'r', () => {
+    var jsonLog = JSON.stringify(chatlog);
+    connection.send(jsonLog);
+  });
+
+
+  // var logArray = fs.readFileSync('./chatlog.txt').toString().split("\n");
+  // for(i in logArray) {
+  //     console.log(logArray[i]);
+  // }
 
   connection.on('message', (message) => {
     fs.appendFile('chatlog.txt', '\n'+message, function (err) {
