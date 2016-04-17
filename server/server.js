@@ -7,55 +7,59 @@ var connectionID = 0;
 var fs = require('fs');
 var http_server = express();
 var ws_server = new ws.Server({port:4242});
+var readline = require('readline');
 
 http_server.use(express.static(__dirname + "/../client"));
 
 ws_server.on('connection', (connection) => {
+    connectionID++;
+    console.log('Opened a connection, id: '+connectionID);
 
-  connectionID++;
-  console.log('Opened a connection, id: '+connectionID);
-
-  // sending chatlog to new connection
-  var chatlog = fs.open('chatlog.txt', 'r', () => {
-    var jsonLog = JSON.stringify(chatlog);
-    connection.send(jsonLog);
-  });
-
-
-  // var logArray = fs.readFileSync('./chatlog.txt').toString().split("\n");
-  // for(i in logArray) {
-  //     console.log(logArray[i]);
-  // }
-
-  connection.on('message', (message) => {
-    fs.appendFile('chatlog.txt', '\n'+message, function (err) {
-      if (err) return console.log(err);
+    // sending chatlog to new connection
+    var rl = readline.createInterface({
+        input: fs.createReadStream('chatlog.txt')
     });
 
-    var json = JSON.parse(message);
-    json = JSON.stringify(
-        {
-            name:escape(json.name),
-            msg:escape(json.msg),
-            timestamp:escape(json.timestamp)
+    rl.on('line', function(line) {
+        var json = JSON.parse(line);
+        json = JSON.stringify(
+            {
+                name:escape(json.name),
+                msg:escape(json.msg),
+                timestamp:escape(json.timestamp)
+            }
+        );
+        connection.send(json);
+    });
+
+    // new incomming message
+    connection.on('message', (message) => {
+        fs.appendFile('chatlog.txt', '\n'+message, function (err) {
+            if (err) return console.log(err);
+        });
+
+        var json = JSON.parse(message);
+        json = JSON.stringify(
+            {
+                name:escape(json.name),
+                msg:escape(json.msg),
+                timestamp:escape(json.timestamp)
+            }
+        );
+        // send message to all clients
+        for(var c=0;c<ws_server.clients.length;c++) {
+            ws_server.clients[c].send(json);
         }
-    );
+    });
 
-    console.log("message: "+json);
+    connection.on('close', () => {
+        console.log("Closed a connection, id: "+connectionID);
+        connectionID--;
+    });
 
-    for(var c=0;c<ws_server.clients.length;c++) {
-      ws_server.clients[c].send(json);
-    }
-  });
-
-  connection.on('close', () => {
-    console.log("Closed a connection, id: "+connectionID);
-    connectionID--;
-  });
-
-  connection.on('error', (error) => {
-    console.error("Error: "+error.message);
-  });
+    connection.on('error', (error) => {
+        console.error("Error: "+error.message);
+    });
 });
 
 // Let node get a random port from the OS so we won't have issues with crashes

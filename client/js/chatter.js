@@ -64,7 +64,7 @@ $(function() {
     var namefield = $("#nameInput");
     var msgfield = $("#msgInput");
     if(!namefield.val()) {
-       // Error 
+       // Error
     }
     else {
       if(msgfield.val()) {
@@ -75,7 +75,7 @@ $(function() {
       }
     }
   }
-  
+
   $("#submit-button").click(() => {
       sendMsg();
   });
@@ -86,4 +86,3 @@ $(function() {
       }
   })
 });
-
