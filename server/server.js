@@ -34,6 +34,10 @@ ws_server.on('connection', (connection) => {
 
     // new incomming message
     connection.on('message', (message) => {
+        if(message.length > 500) {
+            console.log('over 500');
+            return;
+        }
         fs.appendFile('chatlog.txt', '\n'+message, function (err) {
             if (err) return console.log(err);
         });
