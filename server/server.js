@@ -21,6 +21,7 @@ ws_server.on('connection', (connection) => {
     });
 
     rl.on('line', function(line) {
+        if(!line) return;
         var json = JSON.parse(line);
         json = JSON.stringify(
             {
