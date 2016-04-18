@@ -3,6 +3,8 @@ websocket/
 server/node_modules/
 client/node_modules/
 
+.tern-project
+
 chatlog.txt
 
 # Logs
