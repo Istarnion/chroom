@@ -11,6 +11,12 @@ var readline = require('readline');
 
 http_server.use(express.static(__dirname + "/../client"));
 
+function replaceUrl(message) {
+    //var urlRegex = "(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})";
+    var urlRegex = /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    return message.replace(urlRegex, "<a href='$1' target='_blank'>$1</a>");
+}
+
 ws_server.on('connection', (connection) => {
     connectionID++;
     console.log('Opened a connection, id: '+connectionID);
@@ -25,9 +31,9 @@ ws_server.on('connection', (connection) => {
         var json = JSON.parse(line);
         json = JSON.stringify(
             {
-                name:escape(json.name),
-                msg:escape(json.msg),
-                timestamp:escape(json.timestamp)
+                name:json.name,
+                msg:json.msg,
+                timestamp:json.timestamp
             }
         );
         connection.send(json);
@@ -35,22 +41,34 @@ ws_server.on('connection', (connection) => {
 
     // new incomming message
     connection.on('message', (message) => {
-        if(message.length > 500) {
+        var json = JSON.parse(message);
+        if(json.msg.length > 500) {
             console.log('over 500');
-            return;
+            json = JSON.stringify(
+                {
+                    name: "SERVER",
+                    msg: escape(json.name)+", please stop trying to spam the chat. No messages over 500 chars are allowed.",
+                    timestamp: escape(json.timestamp)
+                }
+            )
         }
-        fs.appendFile('chatlog.txt', '\n'+message, function (err) {
+        else {
+
+            var message = escape(json.msg);
+
+            json = JSON.stringify(
+                {
+                    name:escape(json.name),
+                    msg:replaceUrl(message),
+                    timestamp:escape(json.timestamp)
+                }
+            );
+        }
+
+        fs.appendFile('chatlog.txt', '\n'+json, function (err) {
             if (err) return console.log(err);
         });
 
-        var json = JSON.parse(message);
-        json = JSON.stringify(
-            {
-                name:escape(json.name),
-                msg:escape(json.msg),
-                timestamp:escape(json.timestamp)
-            }
-        );
         // send message to all clients
         for(var c=0;c<ws_server.clients.length;c++) {
             ws_server.clients[c].send(json);
@@ -67,7 +85,6 @@ ws_server.on('connection', (connection) => {
     });
 });
 
-// Let node get a random port from the OS so we won't have issues with crashes
 var server = http_server.listen(4241, () => {
     var host = server.address().address;
     if (host == '::') {
@@ -76,3 +93,4 @@ var server = http_server.listen(4241, () => {
     var port = server.address().port;
     console.log('Running and listening at http://%s:%s', host, port);
 });
+
