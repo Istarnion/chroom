@@ -68,7 +68,7 @@ $(function() {
             var chatarea = $("#chatarea");
             var str =
             '<span class="timestamp chat">'+"["+json.timestamp + "] </span>"+
-            '<span class="name chat">'+stringFormat("&lt"+  json.name + "&gt", 16, false)+'</span>'+
+            '<span class="name chat">'+stringFormat("&lt;"+  json.name + "&gt;", 16, false)+'</span>'+
             '<span class="message chat">'+json.msg+'</span>';
             chatarea.html(chatarea.html() + "<br>"+str);
             chatarea.scrollTop(chatarea[0].scrollHeight);
