@@ -57,19 +57,23 @@ $(function() {
       };
 
     ws.onmessage = function(event) {
-      var chatarea = $("#chatarea");
+        var json = JSON.parse(event.data);
 
-      var json = JSON.parse(event.data);
-      var str =
-          '<span class="timestamp chat">'+"["+json.timestamp + "] </span>"+
-          '<span class="name chat">'+stringFormat("&lt"+  json.name + "&gt", 16, false)+'</span>'+
-          '<span class="message chat">'+json.msg+'</span>';
-
-      chatarea.html(chatarea.html() + "<br>"+str);
-
-      chatarea.scrollTop(chatarea[0].scrollHeight);
-
-    };
+        // set number of connections
+        if(json.numberOfCon) {
+            var numberOfCon = $("#numberOfCon");
+            console.log(json.numberOfCon);
+            numberOfCon.html(json.numberOfCon);
+        } else {
+            var chatarea = $("#chatarea");
+            var str =
+            '<span class="timestamp chat">'+"["+json.timestamp + "] </span>"+
+            '<span class="name chat">'+stringFormat("&lt"+  json.name + "&gt", 16, false)+'</span>'+
+            '<span class="message chat">'+json.msg+'</span>';
+            chatarea.html(chatarea.html() + "<br>"+str);
+            chatarea.scrollTop(chatarea[0].scrollHeight);
+          }
+      };
 
     function sendMsg() {
 
@@ -98,4 +102,3 @@ $(function() {
         }
     })
 });
-
