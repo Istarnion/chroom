@@ -52,11 +52,11 @@ $(function() {
         $("#connection_label").html("Not connected");
     };
 
-    ws.onopen = () => {
+    ws.onopen = function() {
         $("#connection_label").html("Connected");
       };
 
-    ws.onmessage = (event) => {
+    ws.onmessage = function(event) {
       var chatarea = $("#chatarea");
 
       var json = JSON.parse(event.data);
@@ -88,11 +88,11 @@ $(function() {
       }
     }
 
-    $("#submit-button").click(() => {
+    $("#submit-button").click(function() {
         sendMsg();
     });
 
-    $("#msgInput").keyup((event) => {
+    $("#msgInput").keyup(function(event) {
         if (event.keyCode === 13) {  // Enter
           sendMsg();
         }
