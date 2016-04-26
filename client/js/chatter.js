@@ -47,7 +47,7 @@ $(function() {
     console.log(host);
     var ws = new WebSocket("ws://"+host+":4242");
 
-    ws.onerror = (msg) => {
+    ws.onerror = function(msg) {
         console.log(msg);
         $("#connection_label").html("Not connected");
     };
