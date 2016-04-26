@@ -20,7 +20,11 @@ function replaceUrl(message) {
 ws_server.on('connection', (connection) => {
     connectionID++;
     console.log('Opened a connection, id: '+connectionID);
-
+    var json = {numberOfCon: ws_server.clients.length};
+    json = JSON.stringify(json);
+    for (var i = 0; i < ws_server.clients.length; i++) {
+        ws_server.clients[i].send(json);
+    }
     // sending chatlog to new connection
     var rl = readline.createInterface({
         input: fs.createReadStream('chatlog.txt')
@@ -93,4 +97,3 @@ var server = http_server.listen(4241, () => {
     var port = server.address().port;
     console.log('Running and listening at http://%s:%s', host, port);
 });
-
